@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promotion Agent - Generate Social Media Content | AgentHub</title>
+  <meta name="description" content="AI agent that generates promotional content for LinkedIn, Twitter, and social media campaigns.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📣</text></svg>">
+  
+  <style>
+    .agent-page { padding: 120px 20px 60px; min-height: 100vh; }
+    .agent-container { max-width: 900px; margin: 0 auto; }
+    .agent-header { text-align: center; margin-bottom: 40px; }
+    .agent-icon { font-size: 64px; margin-bottom: 16px; }
+    .agent-title { font-size: 2.5rem; margin-bottom: 8px; background: linear-gradient(135deg, #f472b6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .agent-subtitle { color: #9ca3af; font-size: 1.1rem; }
+    .agent-status { display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; margin-top: 16px; }
+    .agent-status::before { content: ''; width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    
+    .promo-form { background: rgba(30, 30, 40, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+    .form-group { margin-bottom: 24px; }
+    .form-label { display: block; color: #e5e7eb; font-weight: 500; margin-bottom: 8px; }
+    .form-input, .form-select, .form-textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 1rem; font-family: inherit; transition: border-color 0.2s; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #ec4899; }
+    .form-textarea { min-height: 100px; resize: vertical; }
+    .form-select { cursor: pointer; }
+    .form-select option { background: #1a1a2e; }
+    
+    .platform-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    .platform-btn { padding: 10px 20px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: #9ca3af; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+    .platform-btn:hover { border-color: #ec4899; color: #fff; }
+    .platform-btn.active { background: rgba(236, 72, 153, 0.2); border-color: #ec4899; color: #ec4899; }
+    
+    .generate-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #f472b6, #ec4899); color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(236, 72, 153, 0.3); }
+    .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    
+    .output-section { background: rgba(30, 30, 40, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px; }
+    .output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .output-title { font-size: 1.25rem; font-weight: 600; color: #fff; }
+    .copy-btn { padding: 8px 16px; background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+    .copy-btn:hover { background: rgba(99, 102, 241, 0.3); }
+    
+    .output-content { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 20px; min-height: 150px; white-space: pre-wrap; font-family: 'Inter', sans-serif; line-height: 1.6; color: #e5e7eb; }
+    .output-content.loading { color: #9ca3af; font-style: italic; }
+    
+    .hashtags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .hashtag { background: rgba(99, 102, 241, 0.1); color: #818cf8; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
+    
+    .templates-section { margin-top: 40px; }
+    .templates-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; color: #fff; }
+    .template-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+    .template-card { background: rgba(30, 30, 40, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; }
+    .template-card:hover { border-color: #ec4899; transform: translateY(-2px); }
+    .template-card h4 { color: #fff; margin-bottom: 8px; }
+    .template-card p { color: #9ca3af; font-size: 0.9rem; }
+    
+    .sites-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-top: 8px; }
+    .site-chip { padding: 8px 12px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 6px; color: #a5b4fc; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .site-chip:hover, .site-chip.selected { background: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="../index.html" class="logo">🤖 Agent<span>Hub</span></a>
+      <div class="nav-links">
+        <a href="../index.html#agents">All Agents</a>
+        <a href="../index.html#demo">Demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="agent-page">
+    <div class="agent-container">
+      <!-- Header -->
+      <div class="agent-header">
+        <div class="agent-icon">📣</div>
+        <h1 class="agent-title">Promotion Agent</h1>
+        <p class="agent-subtitle">Generate compelling social media content for your products and services</p>
+        <div class="agent-status">Online</div>
+      </div>
+
+      <!-- Input Form -->
+      <div class="promo-form">
+        <div class="form-group">
+          <label class="form-label">Select Site to Promote</label>
+          <div class="sites-grid" id="sites-grid">
+            <div class="site-chip selected" data-site="AIUNITES" data-tagline="AI-Powered Business Solutions">◆ AIUNITES</div>
+            <div class="site-chip" data-site="AIZines" data-tagline="Create AI-Powered Digital Magazines">📰 AIZines</div>
+            <div class="site-chip" data-site="AIByJob" data-tagline="The Right AI Tools for Your Profession">💼 AIByJob</div>
+            <div class="site-chip" data-site="Redomy" data-tagline="Track Your Home Renovation Projects">🏠 Redomy</div>
+            <div class="site-chip" data-site="VideoBate" data-tagline="Master Logical Fallacies Through Play">🎯 VideoBate</div>
+            <div class="site-chip" data-site="Gameatica" data-tagline="Classic Games Reimagined">🎮 Gameatica</div>
+            <div class="site-chip" data-site="AgentHub" data-tagline="AI Agents for Business Growth">🤖 AgentHub</div>
+            <div class="site-chip" data-site="FurnishThings" data-tagline="AI-Powered Interior Design">🛋️ FurnishThings</div>
+            <div class="site-chip" data-site="BizStry" data-tagline="Your Business Story, Told Right">📖 BizStry</div>
+            <div class="site-chip" data-site="Cloudsion" data-tagline="Cloud Solutions Made Simple">☁️ Cloudsion</div>
+            <div class="site-chip" data-site="UptownIT" data-tagline="Premium IT Services">💻 UptownIT</div>
+            <div class="site-chip" data-site="ERPise" data-tagline="Enterprise Resource Planning">📊 ERPise</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Platform</label>
+          <div class="platform-buttons">
+            <button class="platform-btn active" data-platform="linkedin">🔗 LinkedIn</button>
+            <button class="platform-btn" data-platform="twitter">🐦 Twitter/X</button>
+            <button class="platform-btn" data-platform="facebook">📘 Facebook</button>
+            <button class="platform-btn" data-platform="instagram">📸 Instagram</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Content Type</label>
+          <select class="form-select" id="content-type">
+            <option value="launch">🚀 Product Launch Announcement</option>
+            <option value="feature">✨ Feature Highlight</option>
+            <option value="benefit">💡 Key Benefit / Value Prop</option>
+            <option value="testimonial">⭐ Customer Success Story</option>
+            <option value="tip">📝 Industry Tip + Product Mention</option>
+            <option value="question">❓ Engagement Question</option>
+            <option value="behind">🎬 Behind the Scenes</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Context (optional)</label>
+          <textarea class="form-textarea" id="context" placeholder="Add any specific details, features to highlight, or tone preferences..."></textarea>
+        </div>
+
+        <button class="generate-btn" id="generate-btn">
+          📣 Generate Promotional Content
+        </button>
+      </div>
+
+      <!-- Output Section -->
+      <div class="output-section">
+        <div class="output-header">
+          <h3 class="output-title">Generated Content</h3>
+          <button class="copy-btn" id="copy-btn">📋 Copy</button>
+        </div>
+        <div class="output-content" id="output">
+          Select a site and click "Generate" to create promotional content...
+        </div>
+        <div class="hashtags" id="hashtags"></div>
+      </div>
+
+      <!-- Quick Templates -->
+      <div class="templates-section">
+        <h3 class="templates-title">Quick Templates</h3>
+        <div class="template-cards">
+          <div class="template-card" data-template="launch">
+            <h4>🚀 Launch Post</h4>
+            <p>Announce a new product or major update with excitement</p>
+          </div>
+          <div class="template-card" data-template="value">
+            <h4>💎 Value Proposition</h4>
+            <p>Highlight the key benefits and problems solved</p>
+          </div>
+          <div class="template-card" data-template="cta">
+            <h4>📢 Call to Action</h4>
+            <p>Drive sign-ups, demos, or website visits</p>
+          </div>
+          <div class="template-card" data-template="story">
+            <h4>📖 Story Format</h4>
+            <p>Tell a compelling story about transformation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Site data
+    const siteData = {
+      'AIUNITES': { url: 'https://aiunites.com', tagline: 'AI-Powered Business Solutions', features: ['AI Consulting', 'Custom Development', 'Integration Services'] },
+      'AIZines': { url: 'https://aizines.com', tagline: 'Create AI-Powered Digital Magazines', features: ['AI Content Generation', 'Beautiful Templates', 'One-Click Publishing'] },
+      'AIByJob': { url: 'https://aibyjob.com', tagline: 'The Right AI Tools for Your Profession', features: ['Curated AI Tools', 'Job-Specific Recommendations', 'Save Favorites'] },
+      'Redomy': { url: 'https://redomy.com', tagline: 'Track Your Home Renovation Projects', features: ['Project Tracking', 'Budget Management', 'Progress Photos'] },
+      'VideoBate': { url: 'https://videobate.com', tagline: 'Master Logical Fallacies Through Play', features: ['Interactive Quizzes', 'Learn Critical Thinking', 'Leaderboards'] },
+      'Gameatica': { url: 'https://gameatica.com', tagline: 'Classic Games Reimagined', features: ['Classic Games', 'Modern UI', 'Leaderboards'] },
+      'AgentHub': { url: 'https://agenthub.ai', tagline: 'AI Agents for Business Growth', features: ['Lead Finding', 'Site Building', 'Marketing Automation'] },
+      'FurnishThings': { url: 'https://furnishthings.com', tagline: 'AI-Powered Interior Design', features: ['AI Room Design', 'Style Matching', '3D Visualization'] },
+      'BizStry': { url: 'https://bizstry.com', tagline: 'Your Business Story, Told Right', features: ['Brand Storytelling', 'Content Strategy', 'Narrative Design'] },
+      'Cloudsion': { url: 'https://cloudsion.com', tagline: 'Cloud Solutions Made Simple', features: ['Cloud Migration', 'Infrastructure', 'Security'] },
+      'UptownIT': { url: 'https://uptownit.com', tagline: 'Premium IT Services', features: ['IT Support', 'Security', 'Consulting'] },
+      'ERPise': { url: 'https://erpise.com', tagline: 'Enterprise Resource Planning', features: ['ERP Implementation', 'Integration', 'Training'] },
+    };
+
+    // State
+    let selectedSite = 'AIUNITES';
+    let selectedPlatform = 'linkedin';
+
+    // Elements
+    const sitesGrid = document.getElementById('sites-grid');
+    const platformBtns = document.querySelectorAll('.platform-btn');
+    const contentType = document.getElementById('content-type');
+    const contextInput = document.getElementById('context');
+    const generateBtn = document.getElementById('generate-btn');
+    const output = document.getElementById('output');
+    const hashtags = document.getElementById('hashtags');
+    const copyBtn = document.getElementById('copy-btn');
+    const templateCards = document.querySelectorAll('.template-card');
+
+    // Site selection
+    sitesGrid.addEventListener('click', (e) => {
+      const chip = e.target.closest('.site-chip');
+      if (chip) {
+        document.querySelectorAll('.site-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        selectedSite = chip.dataset.site;
+      }
+    });
+
+    // Platform selection
+    platformBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        platformBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedPlatform = btn.dataset.platform;
+      });
+    });
+
+    // Template quick select
+    templateCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const template = card.dataset.template;
+        if (template === 'launch') contentType.value = 'launch';
+        else if (template === 'value') contentType.value = 'benefit';
+        else if (template === 'cta') contentType.value = 'feature';
+        else if (template === 'story') contentType.value = 'testimonial';
+        generateContent();
+      });
+    });
+
+    // Generate content
+    generateBtn.addEventListener('click', generateContent);
+
+    function generateContent() {
+      const site = siteData[selectedSite];
+      const type = contentType.value;
+      const context = contextInput.value;
+      
+      generateBtn.disabled = true;
+      generateBtn.textContent = '⏳ Generating...';
+      output.classList.add('loading');
+      output.textContent = 'Generating promotional content...';
+      
+      setTimeout(() => {
+        const content = generatePost(selectedSite, site, selectedPlatform, type, context);
+        output.classList.remove('loading');
+        output.textContent = content.text;
+        
+        // Show hashtags
+        hashtags.innerHTML = content.hashtags.map(h => `<span class="hashtag">${h}</span>`).join('');
+        
+        generateBtn.disabled = false;
+        generateBtn.textContent = '📣 Generate Promotional Content';
+      }, 800);
+    }
+
+    function generatePost(name, site, platform, type, context) {
+      const charLimit = platform === 'twitter' ? 280 : platform === 'linkedin' ? 3000 : 2000;
+      const features = site.features.join(', ');
+      
+      let text = '';
+      let tags = [];
+
+      // Platform-specific hashtags
+      const baseTags = ['#AI', '#Tech', '#Innovation'];
+      if (name === 'AIUNITES') tags = ['#AI', '#AIConsulting', '#DigitalTransformation', '#AIUNITES'];
+      else if (name === 'AIZines') tags = ['#AI', '#DigitalMagazines', '#ContentCreation', '#AIZines'];
+      else if (name === 'AIByJob') tags = ['#AI', '#AITools', '#Productivity', '#AIByJob'];
+      else if (name === 'Redomy') tags = ['#HomeRenovation', '#DIY', '#HomeImprovement', '#Redomy'];
+      else if (name === 'VideoBate') tags = ['#CriticalThinking', '#Education', '#LogicalFallacies', '#VideoBate'];
+      else if (name === 'Gameatica') tags = ['#Gaming', '#ClassicGames', '#IndieGames', '#Gameatica'];
+      else if (name === 'AgentHub') tags = ['#AI', '#AIAgents', '#Automation', '#LeadGeneration', '#AgentHub'];
+      else tags = baseTags;
+
+      // Generate based on type
+      switch(type) {
+        case 'launch':
+          if (platform === 'linkedin') {
+            text = `🚀 Exciting News!\n\nI'm thrilled to introduce ${name} - ${site.tagline}.\n\nIn a world where ${context || 'businesses need to move faster than ever'}, we built something special.\n\n✨ What makes ${name} different?\n\n• ${site.features[0]}\n• ${site.features[1]}\n• ${site.features[2]}\n\nThis isn't just another tool. It's a complete solution designed to transform how you work.\n\n🔗 Check it out: ${site.url}\n\nWhat challenges are you facing that AI could help solve? Drop a comment below! 👇`;
+          } else if (platform === 'twitter') {
+            text = `🚀 Just launched: ${name}!\n\n${site.tagline}\n\n✨ ${site.features[0]}\n✨ ${site.features[1]}\n\nCheck it out 👉 ${site.url}`;
+          } else {
+            text = `🚀 Big announcement!\n\nIntroducing ${name} - ${site.tagline}\n\nWe're so excited to share this with you! Features include:\n\n✅ ${site.features[0]}\n✅ ${site.features[1]}\n✅ ${site.features[2]}\n\nLearn more: ${site.url}`;
+          }
+          break;
+
+        case 'feature':
+          if (platform === 'linkedin') {
+            text = `💡 Did you know?\n\n${name} offers ${site.features[0]} that can transform your workflow.\n\nHere's how it works:\n\n1️⃣ ${context || 'Sign up in seconds'}\n2️⃣ Configure your preferences\n3️⃣ Let the AI do the heavy lifting\n\nThe result? More time for what matters, less time on repetitive tasks.\n\n${site.tagline}\n\n🔗 Try it free: ${site.url}\n\nWhat feature would save you the most time? 🤔`;
+          } else {
+            text = `✨ Feature spotlight: ${site.features[0]}\n\n${name} makes it easy to ${site.tagline.toLowerCase()}.\n\nTry it: ${site.url}`;
+          }
+          break;
+
+        case 'benefit':
+          if (platform === 'linkedin') {
+            text = `The problem:\n${context || 'Too many businesses struggle with outdated processes that waste time and money.'}\n\nThe solution:\n${name} - ${site.tagline}\n\n📈 Here's what changes:\n\n• Save hours every week\n• Reduce errors and friction\n• Scale without adding headcount\n\nAI isn't about replacing people. It's about empowering them to do their best work.\n\n🔗 See how: ${site.url}\n\nWhat would you do with 10 extra hours a week?`;
+          } else {
+            text = `Stop struggling with ${context || 'outdated tools'}.\n\n${name} helps you:\n✅ Save time\n✅ Work smarter\n✅ Get results\n\n${site.url}`;
+          }
+          break;
+
+        case 'testimonial':
+          if (platform === 'linkedin') {
+            text = `"I was skeptical at first, but ${name} completely changed how we work."\n\nThat's what we keep hearing from users who try ${name}.\n\n📊 The results speak for themselves:\n\n• ${context || '50% time savings on routine tasks'}\n• Happier team members\n• Better outcomes for clients\n\n${site.tagline}\n\nReady to see similar results?\n\n🔗 ${site.url}\n\nShare your AI success story below! 👇`;
+          } else {
+            text = `⭐ "${name} changed everything for us."\n\n${site.tagline}\n\nJoin hundreds of happy users: ${site.url}`;
+          }
+          break;
+
+        case 'tip':
+          if (platform === 'linkedin') {
+            text = `💡 Pro tip for ${context || 'anyone looking to work smarter'}:\n\nStop doing manually what AI can automate.\n\nI've seen too many professionals spend hours on tasks that could take minutes with the right tools.\n\n${name} is designed exactly for this - ${site.tagline.toLowerCase()}.\n\nKey capabilities:\n• ${site.features[0]}\n• ${site.features[1]}\n\n🔗 Learn more: ${site.url}\n\nWhat task do you wish you could automate? Let me know! 👇`;
+          } else {
+            text = `💡 Tip: Automate the boring stuff.\n\n${name} helps with ${site.features[0].toLowerCase()}.\n\n${site.url}`;
+          }
+          break;
+
+        case 'question':
+          if (platform === 'linkedin') {
+            text = `Quick question for my network:\n\n${context || 'How are you using AI in your daily work?'}\n\nI've been exploring tools like ${name} (${site.tagline.toLowerCase()}) and I'm curious what's working for others.\n\nDrop your favorite AI tool or use case in the comments!\n\n🔗 If you haven't tried ${name} yet: ${site.url}`;
+          } else {
+            text = `🤔 Question: ${context || 'Are you using AI to work smarter?'}\n\nCheck out ${name}: ${site.url}`;
+          }
+          break;
+
+        case 'behind':
+          if (platform === 'linkedin') {
+            text = `🎬 Behind the scenes at ${name}...\n\nBuilding AI products is a journey. Here's what we've learned:\n\n1. Start with real problems\n2. Listen to users relentlessly\n3. Ship fast, iterate faster\n\n${context || 'Every feature in ' + name + ' exists because someone asked for it.'}\n\n${site.tagline}\n\n🔗 See what we've built: ${site.url}\n\nWhat's your biggest challenge that technology could solve?`;
+          } else {
+            text = `🎬 Building ${name} has taught us so much.\n\n${site.tagline}\n\nSee our journey: ${site.url}`;
+          }
+          break;
+      }
+
+      return { text, hashtags: tags };
+    }
+
+    // Copy to clipboard
+    copyBtn.addEventListener('click', () => {
+      const text = output.textContent;
+      const tagsText = Array.from(hashtags.querySelectorAll('.hashtag')).map(h => h.textContent).join(' ');
+      navigator.clipboard.writeText(text + '\n\n' + tagsText).then(() => {
+        copyBtn.textContent = '✓ Copied!';
+        setTimeout(() => copyBtn.textContent = '📋 Copy', 2000);
+      });
+    });
+  </script>
+</body>
+</html>

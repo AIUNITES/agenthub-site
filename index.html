@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VP15KRLV6P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VP15KRLV6P');
+  </script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentHub → AIByJob | AI Agents for Your Profession</title>
+  <meta http-equiv="refresh" content="3;url=https://aiunites.github.io/aibyjob-demo/">
+  <meta name="description" content="AgentHub has merged into AIByJob - your hub for AI agents organized by profession.">
+  <meta name="robots" content="noindex">
+  
+  <!-- Still provide OG tags for any shares -->
+  <meta property="og:title" content="AgentHub is now AIByJob">
+  <meta property="og:description" content="AI Agents for your profession - find leads, build sites, automate marketing.">
+  <meta property="og:url" content="https://aiunites.github.io/aibyjob-demo/">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .container { max-width: 500px; }
+    .icon { font-size: 64px; margin-bottom: 20px; animation: bounce 1s ease infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    h1 { font-size: 2rem; margin-bottom: 10px; }
+    h1 span { color: #ff3366; }
+    p { color: #9ca3af; margin-bottom: 20px; line-height: 1.6; }
+    .redirect-msg { 
+      background: rgba(255, 51, 102, 0.1);
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      padding: 16px 24px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .redirect-msg strong { color: #ff3366; }
+    a { 
+      display: inline-block;
+      background: linear-gradient(135deg, #ff3366, #ff6b6b);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    a:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 51, 102, 0.3); }
+    .loader { 
+      width: 40px; height: 40px; 
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: #ff3366;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .features { display: flex; gap: 16px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+    .feature { background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 20px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🤖</div>
+    <h1>AgentHub is now AI<span>ByJob</span></h1>
+    <p>We've consolidated our AI agent platforms into one powerful hub.<br>Same great agents, better organization by profession.</p>
+    <div class="redirect-msg">
+      <strong>Redirecting in 3 seconds...</strong>
+    </div>
+    <div class="loader"></div>
+    <a href="https://aiunites.github.io/aibyjob-demo/">Go to AIByJob Now →</a>
+    <div class="features">
+      <span class="feature">🔍 LeadFinder</span>
+      <span class="feature">🏗️ WebBuilder</span>
+      <span class="feature">📈 Marketing</span>
+      <span class="feature">📣 Promotion</span>
+    </div>
+  </div>
+  
+  <script>
+    // For local development, redirect to relative path
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') {
+      setTimeout(() => { window.location.href = '../aibyjob-demo/index.html'; }, 3000);
+    }
+  </script>
+  <p style="position:fixed;bottom:8px;left:0;right:0;text-align:center;color:rgba(255,255,255,.25);font-size:10px;font-family:system-ui,sans-serif;">&#9888;&#65039; Demo site &middot; <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,.3);text-decoration:none;">Privacy</a> &middot; <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,.3);text-decoration:none;">Terms</a> &middot; &copy; 2026 <a href="https://aiunites.github.io/aiunites-site" style="color:#f59e0b;text-decoration:none;">AIUNITES</a></p>
+</body>
+</html>

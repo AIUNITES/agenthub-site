@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# AgentHub is a redirect page → AIByJob
+# No indexing needed
